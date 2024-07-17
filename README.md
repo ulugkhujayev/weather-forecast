@@ -25,12 +25,14 @@
 
 1. Клонируйте репозиторий:
    `git clone https://github.com/ulugkhujayev/weather-forecast.git`
+
    `cd weather-forecast`
+
 2. Создайте файл `.env` в корне проекта и добавьте следующие переменные:
-   `SECRET_KEY=your_secret_key_here
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
-OPENWEATHERMAP_API_KEY=api_key`
+   `SECRET_KEY=your_secret_key_here`
+   `DEBUG=True`
+   `ALLOWED_HOSTS=localhost,127.0.0.1`
+   `OPENWEATHERMAP_API_KEY=api_key`
 
 3. Соберите и запустите Docker-контейнер:
    `docker-compose up --build`
