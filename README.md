@@ -29,7 +29,7 @@
    `cd weather-forecast`
 
 2. Создайте файл `.env` в корне проекта и добавьте следующие переменные:
-   `SECRET_KEY=your_secret_key_here`
+   `SECRET_KEY=secret_key`
    `DEBUG=True`
    `ALLOWED_HOSTS=localhost,127.0.0.1`
    `OPENWEATHERMAP_API_KEY=api_key`
