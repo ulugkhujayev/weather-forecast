@@ -1,0 +1,5 @@
+{% for city in cities %}
+    <a href="#" class="list-group-item list-group-item-action" data-lat="{{ city.lat }}" data-lon="{{ city.lon }}">
+        {{ city.name }}
+    </a>
+{% endfor %}

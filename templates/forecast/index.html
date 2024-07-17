@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Weather Forecast</h1>
+
+{% if last_city %}
+<div class="mb-4">
+    <p>Would you like to see the weather for {{ last_city }}?</p>
+    <button class="btn btn-primary" hx-get="{% url 'get_weather' %}?city={{ last_city }}" hx-target="#weather-results">Yes</button>
+</div>
+{% endif %}
+
+<form hx-get="{% url 'get_weather' %}" hx-target="#weather-results" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="city" id="city-input" class="form-control" placeholder="Enter city name" 
+            hx-get="{% url 'city_autocomplete' %}" 
+            hx-trigger="keyup changed delay:500ms" 
+            hx-target="#city-suggestions">
+        <input type="hidden" name="lat" id="city-lat">
+        <input type="hidden" name="lon" id="city-lon">
+        <button class="btn btn-primary" type="submit">Get Weather</button>
+    </div>
+    <div id="city-suggestions" class="list-group mt-2"></div>
+</form>
+
+<div id="weather-results"></div>
+
+<h2 class="mt-5 mb-3">Your Search History</h2>
+<div id="search-history" hx-get="{% url 'search_history' %}" hx-trigger="load"></div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+        if (event.detail.target.id === 'city-suggestions') {
+            const suggestions = JSON.parse(event.detail.xhr.response);
+            let suggestionsHtml = '';
+            suggestions.forEach(city => {
+                suggestionsHtml += `<a href="#" class="list-group-item list-group-item-action" data-lat="${city.lat}" data-lon="${city.lon}">${city.name}</a>`;
+            });
+            event.detail.target.innerHTML = suggestionsHtml;
+    
+            const suggestionItems = event.detail.target.querySelectorAll('.list-group-item');
+            suggestionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelector('#city-input').value = this.textContent;
+                    document.querySelector('#city-lat').value = this.dataset.lat;
+                    document.querySelector('#city-lon').value = this.dataset.lon;
+                    event.detail.target.innerHTML = '';
+                });
+            });
+        }
+    });
+    </script>
+{% endblock %}
